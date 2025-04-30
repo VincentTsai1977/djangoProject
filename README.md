@@ -8,5 +8,3 @@ pip install -r requirements.txt
 python manage.py runserver
 
 通常本地端執行網址
-
-https://127.0.0.1:8000
