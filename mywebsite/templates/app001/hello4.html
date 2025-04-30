@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>第一個HTML模板</title>
+        {% load static %}
+        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <!--       Dict 的 Key-->
+        <img src="{% static 'images/ball.png' %}" alt="Ball" width="32" height="32" />
+        <span class="info">你好: {{username}}</span>
+        <h2>時間: {{now}}</h2>
+    </body>
+</html>

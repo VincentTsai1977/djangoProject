@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load account socialaccount %}
+
+{% block title %}<title>{% trans "註冊新帳號" %}</title>{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white text-center">
+        <h4><i class="fas fa-user-plus me-2"></i>{% trans "註冊新帳號" %}</h4>
+      </div>
+      <div class="card-body p-4">
+        {% get_providers as socialaccount_providers %}
+        
+        {% if socialaccount_providers %}
+          <div class="social-login mb-4">
+            <div class="text-center mb-3">
+              <h5 class="fw-normal">{% trans "使用第三方帳號快速註冊" %}</h5>
+            </div>
+            
+            {% for provider in socialaccount_providers %}
+              {% if provider.id == "google" %}
+                <a href="{% provider_login_url provider.id process='login' %}" class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center mb-3">
+                  <i class="fab fa-google me-2"></i>{% trans "使用 Google 帳號註冊" %}
+                </a>
+              {% endif %}
+              {% if provider.id == "facebook" %}
+                <a href="{% provider_login_url provider.id process='login' %}" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center mb-3">
+                  <i class="fab fa-facebook-f me-2"></i>{% trans "使用 Facebook 帳號註冊" %}
+                </a>
+              {% endif %}
+              {% if provider.id == "github" %}
+                <a href="{% provider_login_url provider.id process='login' %}" class="btn btn-outline-dark btn-lg d-flex align-items-center justify-content-center mb-3">
+                  <i class="fab fa-github me-2"></i>{% trans "使用 GitHub 帳號註冊" %}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+          
+          <div class="separator d-flex align-items-center my-4">
+            <div class="flex-grow-1 border-bottom"></div>
+            <span class="mx-3 text-muted">{% trans "或者註冊新帳號" %}</span>
+            <div class="flex-grow-1 border-bottom"></div>
+          </div>
+        {% endif %}
+        
+        <div class="mt-3">
+          <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+              <div class="alert alert-danger">
+                {% for field, errors in form.errors.items %}
+                  {% for error in errors %}
+                    <p class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</p>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            <div class="mb-3">
+              <label for="id_username" class="form-label"><i class="fas fa-user me-2"></i>{% trans "使用者名稱" %}</label>
+              <input type="text" name="username" class="form-control" placeholder="{% trans '請設定您的使用者名稱' %}" id="id_username" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="id_email" class="form-label"><i class="fas fa-envelope me-2"></i>{% trans "電子郵件" %}</label>
+              <input type="email" name="email" class="form-control" placeholder="{% trans '請輸入您的電子郵件' %}" id="id_email">
+            </div>
+            
+            <div class="mb-3">
+              <label for="id_password1" class="form-label"><i class="fas fa-lock me-2"></i>{% trans "密碼" %}</label>
+              <input type="password" name="password1" class="form-control" placeholder="{% trans '請設定您的密碼' %}" id="id_password1" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="id_password2" class="form-label"><i class="fas fa-lock me-2"></i>{% trans "確認密碼" %}</label>
+              <input type="password" name="password2" class="form-control" placeholder="{% trans '請再次輸入密碼' %}" id="id_password2" required>
+            </div>
+            
+            <div class="d-grid mt-4">
+              <button class="btn btn-success btn-lg" type="submit">
+                <i class="fas fa-user-plus me-2"></i>{% trans "註冊" %}
+              </button>
+            </div>
+            
+            {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+          </form>
+        </div>
+      </div>
+      <div class="card-footer text-center text-muted">
+        <p>{% trans "已經有帳號了？" %} <a href="{% url 'account_login' %}">{% trans "登入" %}</a></p>
+        <div class="mt-2">
+          <a href="/cookiessessions/login/" class="text-decoration-none">
+            <i class="fas fa-arrow-left me-1"></i>{% trans "返回原始登入頁面" %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 
