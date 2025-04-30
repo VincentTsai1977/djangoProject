@@ -4,4 +4,5 @@
 pip install -r requirements.txt
 
 執行專案
+
 python manage.py runserver
